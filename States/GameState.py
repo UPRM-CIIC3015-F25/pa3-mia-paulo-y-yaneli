@@ -561,6 +561,7 @@ class GameState(State):
             Rank.TEN: 10, Rank.JACK: 11, Rank.QUEEN: 12,
             Rank.KING: 13, Rank.ACE: 14
         }
+
         for i in range(len(self.hand)):
             for j in range( i + 1, len(self.hand)):
 
