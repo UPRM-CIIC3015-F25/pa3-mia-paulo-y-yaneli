@@ -588,12 +588,32 @@ class GameState(State):
 
         for i in range(len(self.hand)):
             for j in range( i + 1, len(self.hand)):
+                card_i = self.hand[i]
+                card_j = self.hand[j]
 
-                if sort_by == "rank":
-                    left = rankOrder[self.hand[i].rank]
-                    right = rankOrder[self.hand[j].rank]
+                suit_i = suitOrder.index(card_i.suit)
+                suit_j = suitOrder.index(card_j.suit)
 
-                if right < left:
+                rank_i = rankOrder[card_i.rank]
+                rank_j = rankOrder[card_j.rank]
+
+                should_swap = False
+
+                if sort_by == "suit":
+                    if suit_j < suit_i:
+                        should_swap = True
+                    elif suit_j == suit_i:
+                        if rank_j < rank_i:
+                            should_swap = True
+
+                elif sort_by == "rank":
+                    if rank_j < rank_i:
+                        should_swap = True
+                    elif rank_j == rank_i:
+                        if suit_j < suit_i:
+                            should_swap = True
+
+                if should_swap:
                     self.hand[i], self.hand[j] = self.hand[j], self.hand[i]
 
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
