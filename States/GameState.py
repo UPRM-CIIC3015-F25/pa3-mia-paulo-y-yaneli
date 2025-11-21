@@ -835,6 +835,44 @@ class GameState(State):
 
         # ------------------- Apply Joker effects -------------------
         owned = set(self.playerJokers)
+
+        if "The Joker" in owned:
+            hand_mult +=4
+            self.activated_jokers.add("The Joker")
+        if "Michael Myers"in owned:
+            extra= random.randint(0,23)
+            hand_mult += extra
+            self.activated_jokers.add("Michael Myers")
+        if "Fibonacci"in owned:
+            fib_ranks= [14,2,3,5,8]
+            count= sum(1 for c in used_cards if c.rank.value in fib_ranks)
+            hand_mult+= count*8
+            self.activated_jokers.add("Fibonacci")
+        if "Gauntlet"in owned:
+            total_chips +=250
+            self.playerInfo.amountOfHands= max(0,self.playerInfo.amountOfHands -2)
+            self.activated_jokers.add("Gauntlet")
+        if "Ogre" in owned:
+            hand_mult += len(self.playerJokers) * 3
+            self.activated_jokers.add("Ogre")
+        if "StrawHat"in owned:
+            total_chips +=100
+            hands_played= 4-self.playerInfo.amountOfHands
+            penalty= hands_played*5
+            total_chips -=penalty
+            self.activated_jokers.add("StrawHat")
+        if "Hog Rider" in owned and hand_name == "Straight":
+            total_chips +=100
+            self.activated_jokers.add("Hog Rider")
+        if "? Block" in owned and len(used_cards) ==4:
+            total_chips +=4
+            self.activated_jokers.add("? Block")
+        if "Hogwarts" in owned:
+            aces= sum(1 for c in used_cards if c.rank.value == 14)
+            hand_mult += aces*4
+            total_chips += aces*20
+            self.activated_jokers.add("Hogwarts")
+
         # TODO (TASK 5.2): Let the Joker mayhem begin! Implement each Joker’s effect using the Joker table as reference.
         #   Follow this structure for consistency:
         #   if "joker card name" in owned:
@@ -843,6 +881,9 @@ class GameState(State):
         #   The last line ensures the Joker is visibly active and its effects are properly applied.
 
         procrastinate = False
+        if "802" in owned and self.playerInfo.amountOfHands ==0:
+            procrastinate = True
+            self.activated_jokers.add("802")
 
         # commit modified player multiplier and chips
         self.playerInfo.playerMultiplier = hand_mult
