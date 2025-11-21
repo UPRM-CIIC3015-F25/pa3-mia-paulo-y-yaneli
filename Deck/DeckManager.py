@@ -175,7 +175,7 @@ class DeckManager:
             "Fibonacci": 5,
             "Gauntlet": 5,
             "Ogre": 5,
-            "Straw Hat": 5,
+            "StrawHat": 5,
             "Hog Rider": 4,
             "? Block": 5,
             "Hogwarts": 6,
